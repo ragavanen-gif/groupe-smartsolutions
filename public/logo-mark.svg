@@ -1,0 +1,7 @@
+<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Smart Solutions">
+  <path d="M22,32 C15,24 15,16 22,11 C29,16 29,24 22,32 Z" fill="#e91e63"/>
+  <path d="M22,32 C15,24 15,16 22,11 C29,16 29,24 22,32 Z" fill="#34c24a" transform="rotate(-58 22 32)"/>
+  <path d="M22,32 C15,24 15,16 22,11 C29,16 29,24 22,32 Z" fill="#f4c81f" transform="rotate(-122 22 32)"/>
+  <path d="M22,32 C15,24 15,16 22,11 C29,16 29,24 22,32 Z" fill="#29abe2" transform="rotate(180 22 32)"/>
+  <path d="M13,32 L27,19 L27,26.5 L52,26.5 L52,37.5 L27,37.5 L27,45 Z" fill="#4a1a4a"/>
+</svg>
