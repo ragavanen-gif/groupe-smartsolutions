@@ -1,9 +1,9 @@
 # Déploiement — Smart Solutions
 
 Site Next.js hébergé **gratuitement sur Vercel**. Domaines gérés chez
-**Hostinger** : **`groupesmartsolutions.com`** (adresse principale du site) et
-**`groupesmartsolutions.fr`** (redirigé vers le `.com` ; sert aussi pour
-l'email `contact@groupesmartsolutions.fr`).
+**Hostinger** : **`groupesmartsolutions.fr`** (adresse principale du site + email
+`contact@groupesmartsolutions.fr`) et **`groupesmartsolutions.com`** (redirigé
+vers le `.fr`).
 
 ---
 
@@ -27,8 +27,8 @@ Le plus simple (sans ligne de commande) :
 ## Étape 2 — Brancher le domaine Hostinger
 
 1. Sur Vercel : projet → **Settings → Domains → Add** → saisir
-   `groupesmartsolutions.com` (Vercel proposera d'ajouter `www` automatiquement).
-   Ajouter aussi `groupesmartsolutions.fr` et le régler en **Redirect → groupesmartsolutions.com**.
+   `groupesmartsolutions.fr` (Vercel proposera d'ajouter `www` automatiquement).
+   Ajouter aussi `groupesmartsolutions.com` et le régler en **Redirect → groupesmartsolutions.fr**.
 2. Vercel affiche les **enregistrements DNS** à créer. En général :
 
    | Type  | Nom / Hôte | Valeur                     |
