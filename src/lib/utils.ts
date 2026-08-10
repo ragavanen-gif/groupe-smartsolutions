@@ -9,7 +9,7 @@ export const site = {
   name: "Smart Solutions",
   tagline: "Groupe de conseil & de solutions digitales",
   email: "contact@groupesmartsolutions.fr",
-  domain: "groupesmartsolutions.fr",
+  domain: "groupesmartsolutions.com",
   phone: "+33 (0)1 84 80 00 00",
   address: "France",
 } as const;
