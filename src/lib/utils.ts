@@ -61,7 +61,7 @@ export const branches: readonly Branch[] = [
     slug: "learneezy",
     name: "Learneezy",
     domain: "Formation",
-    externalUrl: "https://learneezy.fr",
+    externalUrl: "https://learneezy.com",
     color: "#29abe2",
     tagline: "Apprendre. Transmettre. Évoluer.",
     description:
