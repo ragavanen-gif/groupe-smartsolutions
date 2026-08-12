@@ -42,7 +42,7 @@ export const metadata: Metadata = {
     locale: "fr_FR",
   },
   icons: {
-    icon: "/logo-mark.svg",
+    icon: "/logo-mark.png",
   },
 };
 
