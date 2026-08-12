@@ -20,7 +20,7 @@ export function Logo({
       width={1200}
       height={434}
       priority
-      className={cn("h-10 w-auto select-none", className)}
+      className={cn("h-14 w-auto select-none", className)}
     />
   );
 }
