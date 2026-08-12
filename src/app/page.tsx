@@ -93,13 +93,18 @@ export default function Home() {
               <p className="eyebrow mt-4 text-plum-400">Notre écosystème</p>
               <div className="mt-4 space-y-4">
                 {branches.map((b) => (
-                  <div
+                  <Link
                     key={b.name}
-                    className="rounded-2xl border border-plum/10 bg-ivory p-4"
+                    href={`/branches/${b.slug}`}
+                    className="group block rounded-2xl border border-plum/10 bg-ivory p-4 transition-all hover:border-plum/25 hover:bg-white hover:shadow-card"
                   >
                     <div className="flex items-center justify-between">
-                      <span className="font-heading text-lg font-bold text-plum-900">
+                      <span className="inline-flex items-center gap-1.5 font-heading text-lg font-bold text-plum-900">
                         {b.name}
+                        <ArrowUpRight
+                          size={15}
+                          className="text-plum-400 transition-transform group-hover:translate-x-0.5 group-hover:text-pink"
+                        />
                       </span>
                       <span
                         className="rounded-full px-2.5 py-0.5 text-[0.65rem] font-semibold"
@@ -111,7 +116,7 @@ export default function Home() {
                     <p className="mt-2 text-sm leading-relaxed text-plum-700/80">
                       {b.tagline}
                     </p>
-                  </div>
+                  </Link>
                 ))}
                 <p className="px-1 pt-1 text-sm text-plum-400">
                   … et de nouvelles solutions à venir.
