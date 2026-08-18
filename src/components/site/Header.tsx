@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { Menu, X } from "lucide-react";
+import { Menu, X, LogIn } from "lucide-react";
 import { Logo } from "./Logo";
 import { cn } from "@/lib/utils";
 
@@ -50,7 +50,13 @@ export function Header() {
           ))}
         </nav>
 
-        <div className="hidden md:block">
+        <div className="hidden items-center gap-5 md:flex">
+          <Link
+            href="/admin"
+            className="inline-flex items-center gap-1.5 text-sm font-medium text-plum-700 transition-colors hover:text-pink"
+          >
+            <LogIn size={16} /> Connexion
+          </Link>
           <Link
             href="/contact"
             className="rounded-full bg-pink px-5 py-2.5 text-sm font-semibold text-white shadow-[0_10px_30px_-12px_rgba(233,30,99,0.5)] transition-transform hover:-translate-y-0.5"
@@ -82,6 +88,13 @@ export function Header() {
                 {item.label}
               </Link>
             ))}
+            <Link
+              href="/admin"
+              onClick={() => setOpen(false)}
+              className="mt-1 inline-flex items-center gap-2 rounded-lg px-3 py-2.5 text-sm font-medium text-plum-700 hover:bg-sand hover:text-pink"
+            >
+              <LogIn size={16} /> Connexion
+            </Link>
             <Link
               href="/contact"
               onClick={() => setOpen(false)}
