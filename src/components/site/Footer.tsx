@@ -60,6 +60,7 @@ export function Footer() {
           <div className="flex gap-6">
             <Link href="/mentions-legales" className="hover:text-pink">Mentions légales</Link>
             <Link href="/confidentialite" className="hover:text-pink">Confidentialité</Link>
+            <Link href="/admin" className="hover:text-pink">Admin</Link>
           </div>
         </div>
       </div>

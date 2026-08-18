@@ -20,6 +20,8 @@ export type Branch = {
   domain: string;
   /** URL externe du produit (inscription / accès) */
   externalUrl: string;
+  /** URL de la page d'administration de l'outil (vide si pas encore dispo) */
+  adminUrl: string;
   color: string;
   tagline: string;
   description: string;
@@ -37,6 +39,7 @@ export const branches: readonly Branch[] = [
     name: "GO PRESTA",
     domain: "Événementiel",
     externalUrl: "https://gopresta.fr",
+    adminUrl: "https://gopresta.fr/admin",
     color: "#e91e63",
     tagline: "L'événementiel, plus simplement.",
     description:
@@ -62,6 +65,7 @@ export const branches: readonly Branch[] = [
     name: "Learneezy",
     domain: "Formation",
     externalUrl: "https://learneezy.com",
+    adminUrl: "",
     color: "#29abe2",
     tagline: "Apprendre. Transmettre. Évoluer.",
     description:
