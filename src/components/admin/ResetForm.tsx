@@ -1,42 +1,43 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
-import { useRouter, useSearchParams } from "next/navigation";
-import { LogIn, Loader2 } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { KeyRound, Loader2 } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 
-export function LoginForm() {
+export function ResetForm() {
   const router = useRouter();
-  const params = useSearchParams();
-  const next = params.get("next") || "/admin";
-
   const [status, setStatus] = useState<"idle" | "sending">("idle");
   const [error, setError] = useState("");
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const fd = new FormData(e.currentTarget);
-    const email = String(fd.get("email") || "").trim();
     const password = String(fd.get("password") || "");
+    const confirm = String(fd.get("confirm") || "");
+
+    if (password.length < 8) {
+      setError("Le mot de passe doit faire au moins 8 caractères.");
+      return;
+    }
+    if (password !== confirm) {
+      setError("Les deux mots de passe ne correspondent pas.");
+      return;
+    }
 
     setStatus("sending");
     setError("");
 
     const supabase = createClient();
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    const { error } = await supabase.auth.updateUser({ password });
 
     if (error) {
-      setError(
-        error.message === "Invalid login credentials"
-          ? "Email ou mot de passe incorrect."
-          : error.message
-      );
+      setError(error.message);
       setStatus("idle");
       return;
     }
 
-    router.replace(next);
+    router.replace("/admin");
     router.refresh();
   }
 
@@ -49,37 +50,37 @@ export function LoginForm() {
     >
       <div className="brand-bar mx-auto mb-6 h-1.5 w-16 rounded-full" />
       <h1 className="text-center font-heading text-2xl font-bold text-plum-900">
-        Espace administration
+        Nouveau mot de passe
       </h1>
       <p className="mt-2 text-center text-sm text-plum-700/70">
-        Connectez-vous pour piloter vos outils.
+        Choisis un nouveau mot de passe pour ton compte.
       </p>
 
       <div className="mt-7 space-y-4">
         <label className="block">
           <span className="mb-1.5 block text-xs font-semibold uppercase tracking-[0.12em] text-plum-400">
-            Email
-          </span>
-          <input
-            name="email"
-            type="email"
-            required
-            autoComplete="username"
-            className={inputCls}
-            placeholder="contact@groupesmartsolutions.fr"
-          />
-        </label>
-        <label className="block">
-          <span className="mb-1.5 block text-xs font-semibold uppercase tracking-[0.12em] text-plum-400">
-            Mot de passe
+            Nouveau mot de passe
           </span>
           <input
             name="password"
             type="password"
             required
-            autoComplete="current-password"
+            autoComplete="new-password"
             className={inputCls}
-            placeholder="••••••••"
+            placeholder="Au moins 8 caractères"
+          />
+        </label>
+        <label className="block">
+          <span className="mb-1.5 block text-xs font-semibold uppercase tracking-[0.12em] text-plum-400">
+            Confirmer
+          </span>
+          <input
+            name="confirm"
+            type="password"
+            required
+            autoComplete="new-password"
+            className={inputCls}
+            placeholder="Répète le mot de passe"
           />
         </label>
       </div>
@@ -97,23 +98,14 @@ export function LoginForm() {
       >
         {sending ? (
           <>
-            <Loader2 size={16} className="animate-spin" /> Connexion…
+            <Loader2 size={16} className="animate-spin" /> Enregistrement…
           </>
         ) : (
           <>
-            Se connecter <LogIn size={16} />
+            Enregistrer <KeyRound size={16} />
           </>
         )}
       </button>
-
-      <div className="mt-5 text-center">
-        <Link
-          href="/admin/forgot"
-          className="text-sm text-plum-400 transition-colors hover:text-pink"
-        >
-          Mot de passe oublié&nbsp;?
-        </Link>
-      </div>
     </form>
   );
 }

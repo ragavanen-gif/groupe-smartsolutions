@@ -1,11 +1,11 @@
 import Link from "next/link";
-import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 import type { Metadata } from "next";
-import { ArrowUpRight, ShieldCheck, Clock } from "lucide-react";
+import { ArrowUpRight, ShieldCheck, Clock, KeyRound } from "lucide-react";
 import { Logo } from "@/components/site/Logo";
 import { LogoutButton } from "@/components/admin/LogoutButton";
 import { branches } from "@/lib/utils";
-import { verifySession, ADMIN_COOKIE } from "@/lib/auth";
+import { createClient } from "@/lib/supabase/server";
 
 export const metadata: Metadata = {
   title: "Administration",
@@ -13,13 +13,16 @@ export const metadata: Metadata = {
 };
 
 export default async function AdminDashboard() {
-  const store = await cookies();
-  const session = await verifySession(store.get(ADMIN_COOKIE)?.value);
-  const email = (session?.sub as string) || "admin";
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) redirect("/admin/login");
+  const email = user.email || "admin";
 
   return (
     <main className="min-h-screen bg-ivory">
-      {/* Barre admin */}
       <header className="sticky top-0 z-40 border-b border-plum/10 bg-white/85 backdrop-blur-md">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-5 py-3 lg:px-8">
           <div className="flex items-center gap-3">
@@ -50,7 +53,6 @@ export default async function AdminDashboard() {
           Choisissez un outil pour accéder à son administration.
         </p>
 
-        {/* Cartes outils */}
         <div className="mt-10 grid gap-6 md:grid-cols-2">
           {branches.map((b) => {
             const available = Boolean(b.adminUrl);
@@ -102,23 +104,25 @@ export default async function AdminDashboard() {
             );
           })}
 
-          {/* Emplacement futur outil */}
           <article className="flex flex-col items-center justify-center rounded-3xl border border-dashed border-plum/20 bg-white/50 p-8 text-center">
-            <p className="font-heading text-lg font-bold text-plum-400">
-              Nouvel outil
-            </p>
+            <p className="font-heading text-lg font-bold text-plum-400">Nouvel outil</p>
             <p className="mt-1 text-sm text-plum-400">
               Vos prochaines solutions apparaîtront ici.
             </p>
           </article>
         </div>
 
-        <p className="mt-10 rounded-2xl border border-plum/10 bg-white p-5 text-sm text-plum-700/70">
-          🔐 Pour l&apos;instant, chaque outil conserve sa propre connexion. La
-          <strong className="text-plum-900"> connexion unique (SSO)</strong> —
-          un seul identifiant pour tout — pourra être ajoutée dans une prochaine
-          étape.
-        </p>
+        <div className="mt-10 flex flex-col items-start justify-between gap-4 rounded-2xl border border-plum/10 bg-white p-5 sm:flex-row sm:items-center">
+          <p className="text-sm text-plum-700/70">
+            Gère l&apos;accès à ton espace d&apos;administration.
+          </p>
+          <Link
+            href="/admin/reset"
+            className="inline-flex items-center gap-2 rounded-full border border-plum/15 px-5 py-2.5 text-sm font-medium text-plum-700 transition-colors hover:border-pink hover:text-pink"
+          >
+            <KeyRound size={15} /> Changer mon mot de passe
+          </Link>
+        </div>
       </div>
     </main>
   );
