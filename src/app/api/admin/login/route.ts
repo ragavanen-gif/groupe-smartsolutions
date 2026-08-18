@@ -30,13 +30,13 @@ export async function POST(request: Request) {
   }
 
   const email = (body.email || "").trim().toLowerCase();
-  const password = body.password || "";
+  const password = (body.password || "").trim();
 
   const ok =
     email.length > 0 &&
     password.length > 0 &&
     safeEqual(email, adminEmail.trim().toLowerCase()) &&
-    safeEqual(password, adminPassword);
+    safeEqual(password, adminPassword.trim());
 
   if (!ok) {
     return NextResponse.json(
