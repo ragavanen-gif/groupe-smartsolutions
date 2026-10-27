@@ -1,6 +1,40 @@
 import { createClient } from "@supabase/supabase-js";
+import {
+  defaultProjects,
+  defaultPartners,
+  type Ecosystem,
+  type EcoItem,
+} from "@/lib/utils";
 
 export type HomeVideo = { url: string; enabled: boolean; title?: string };
+
+function anonClient() {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  if (!url || !key) return null;
+  return createClient(url, key, { auth: { persistSession: false } });
+}
+
+/** Lecture publique de l'écosystème (projets + partenaires). Repli : valeurs par défaut. */
+export async function getEcosystem(): Promise<Ecosystem> {
+  const fallback: Ecosystem = { projects: defaultProjects, partners: defaultPartners };
+  const sb = anonClient();
+  if (!sb) return fallback;
+  try {
+    const { data } = await sb
+      .from("site_settings")
+      .select("value")
+      .eq("key", "ecosystem")
+      .maybeSingle();
+    const v = data?.value as Partial<Ecosystem> | undefined;
+    if (!v) return fallback;
+    const projects = Array.isArray(v.projects) ? (v.projects as EcoItem[]) : fallback.projects;
+    const partners = Array.isArray(v.partners) ? (v.partners as EcoItem[]) : fallback.partners;
+    return { projects, partners };
+  } catch {
+    return fallback;
+  }
+}
 
 const FALLBACK: HomeVideo = { url: "", enabled: false, title: "" };
 

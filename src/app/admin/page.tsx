@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import type { Metadata } from "next";
-import { ArrowUpRight, ShieldCheck, Clock, KeyRound, Video } from "lucide-react";
+import { ArrowUpRight, ShieldCheck, Clock, KeyRound, Video, Boxes } from "lucide-react";
 import { Logo } from "@/components/site/Logo";
 import { LogoutButton } from "@/components/admin/LogoutButton";
 import { branches } from "@/lib/utils";
@@ -131,6 +131,24 @@ export default async function AdminDashboard() {
                 </span>
                 <span className="block text-sm text-plum-700/70">
                   Ajouter ou changer la vidéo
+                </span>
+              </span>
+              <ArrowUpRight size={16} className="ml-auto text-plum-400 transition-colors group-hover:text-pink" />
+            </Link>
+
+            <Link
+              href="/admin/ecosysteme"
+              className="group flex items-center gap-4 rounded-2xl border border-plum/10 bg-white p-5 transition-all hover:-translate-y-0.5 hover:shadow-card"
+            >
+              <span className="grid h-11 w-11 place-items-center rounded-xl bg-pink/10 text-pink-dark">
+                <Boxes size={20} />
+              </span>
+              <span>
+                <span className="block font-heading text-base font-bold text-plum-900">
+                  Écosystème
+                </span>
+                <span className="block text-sm text-plum-700/70">
+                  Gérer les projets &amp; partenaires
                 </span>
               </span>
               <ArrowUpRight size={16} className="ml-auto text-plum-400 transition-colors group-hover:text-pink" />

@@ -195,6 +195,92 @@ export const parcours = [
   },
 ] as const;
 
+export type PartnerSolution = {
+  name: string;
+  category: string;
+  description: string;
+  /** lien externe facultatif (site du partenaire / étude de cas) */
+  url?: string;
+  color: string;
+};
+
+/**
+ * Solutions développées pour des partenaires.
+ * ⚠️ Exemples génériques à remplacer par de vraies réalisations
+ * (noms, descriptions, liens) — ne pas présenter de références non vérifiées.
+ */
+export const partnerSolutions: readonly PartnerSolution[] = [
+  {
+    name: "Plateforme sur mesure",
+    category: "Développement",
+    description:
+      "Conception d'une plateforme métier adaptée aux besoins d'un partenaire, de la réflexion à la mise en ligne.",
+    color: "#34c24a",
+  },
+  {
+    name: "Outil de gestion interne",
+    category: "Outil métier",
+    description:
+      "Un outil pour digitaliser et piloter une activité au quotidien, pensé pour les équipes.",
+    color: "#29abe2",
+  },
+  {
+    name: "Automatisation & intégrations",
+    category: "Automatisation",
+    description:
+      "Connecter les outils existants et supprimer les tâches répétitives pour gagner du temps.",
+    color: "#e91e63",
+  },
+];
+
+/* ------------------------------------------------------------------ */
+/*  Écosystème géré en admin (projets du groupe + partenaires)         */
+/* ------------------------------------------------------------------ */
+
+export type EcoItem = {
+  id: string;
+  name: string;
+  category: string;
+  description: string;
+  /** lien facultatif (interne « /branches/… » ou externe) */
+  url?: string;
+  /** libellé de statut facultatif (ex. « En ligne ») */
+  status?: string;
+  color: string;
+};
+
+export type Ecosystem = { projects: EcoItem[]; partners: EcoItem[] };
+
+/** Couleurs de marque proposées dans l'admin. */
+export const ECO_COLORS = [
+  { label: "Magenta", value: "#e91e63" },
+  { label: "Cyan", value: "#29abe2" },
+  { label: "Vert", value: "#34c24a" },
+  { label: "Jaune", value: "#f4c81f" },
+  { label: "Aubergine", value: "#5f2b60" },
+] as const;
+
+/** Projets par défaut (repris des marques existantes) tant que rien n'est défini en admin. */
+export const defaultProjects: EcoItem[] = branches.map((b) => ({
+  id: b.slug,
+  name: b.name,
+  category: b.domain,
+  description: b.description,
+  url: `/branches/${b.slug}`,
+  status: b.status,
+  color: b.color,
+}));
+
+/** Partenaires par défaut (exemples à personnaliser en admin). */
+export const defaultPartners: EcoItem[] = partnerSolutions.map((p, i) => ({
+  id: `partner-${i + 1}`,
+  name: p.name,
+  category: p.category,
+  description: p.description,
+  url: p.url,
+  color: p.color,
+}));
+
 /** Navigation principale du site */
 export const mainNav = [
   { label: "Nos accompagnements", href: "/accompagnements" },

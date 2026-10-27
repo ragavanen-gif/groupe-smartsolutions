@@ -1,7 +1,6 @@
 import Link from "next/link";
 import {
   ArrowRight,
-  ArrowUpRight,
   Search,
   Compass,
   Hammer,
@@ -13,7 +12,8 @@ import { Header } from "@/components/site/Header";
 import { Footer } from "@/components/site/Footer";
 import { Icon } from "@/components/site/Icon";
 import { VideoPlayer } from "@/components/site/VideoPlayer";
-import { branches, expertises, parcours, cn } from "@/lib/utils";
+import { EcosystemLists } from "@/components/site/EcosystemLists";
+import { expertises, parcours, cn } from "@/lib/utils";
 import { getHomeVideo, getEmbed } from "@/lib/settings";
 
 // Rendu dynamique : l'accueil lit toujours la vidéo définie en admin, à jour.
@@ -269,35 +269,7 @@ export default async function Home() {
             </p>
           </div>
 
-          <div className="mt-12 grid gap-6 md:grid-cols-2">
-            {branches.map((b) => (
-              <Link
-                key={b.slug}
-                href={`/branches/${b.slug}`}
-                className="group relative overflow-hidden rounded-3xl border border-plum/10 bg-white p-8 transition-all hover:-translate-y-1 hover:border-transparent hover:shadow-card"
-              >
-                <span className="absolute inset-x-0 top-0 h-1.5" style={{ backgroundColor: b.color }} />
-                <span
-                  className="absolute right-6 top-6 rounded-full px-3 py-1 text-xs font-semibold"
-                  style={{ color: b.color, backgroundColor: `${b.color}1f` }}
-                >
-                  {b.status}
-                </span>
-                <p className="eyebrow" style={{ color: b.color }}>{b.domain}</p>
-                <h3 className="mt-2 font-heading text-3xl font-extrabold text-plum-900">{b.name}</h3>
-                <p className="mt-1 font-heading text-lg font-medium text-plum-700">{b.tagline}</p>
-                <p className="mt-4 max-w-md leading-relaxed text-plum-700/80">{b.description}</p>
-                <span className="mt-6 inline-flex items-center gap-1.5 text-sm font-semibold text-pink transition-transform group-hover:translate-x-1">
-                  Découvrir {b.name} <ArrowUpRight size={16} />
-                </span>
-              </Link>
-            ))}
-          </div>
-
-          <p className="mt-8 text-center text-sm text-plum-400">
-            De nouvelles marques spécialisées pourront rejoindre l&apos;écosystème
-            selon les besoins.
-          </p>
+          <EcosystemLists />
         </div>
       </section>
 
