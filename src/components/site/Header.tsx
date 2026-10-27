@@ -4,14 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Menu, X, LogIn } from "lucide-react";
 import { Logo } from "./Logo";
-import { cn } from "@/lib/utils";
-
-const nav = [
-  { label: "Le groupe", href: "/#groupe" },
-  { label: "Notre approche", href: "/#approche" },
-  { label: "Nos solutions", href: "/#solutions" },
-  { label: "Contact", href: "/contact" },
-];
+import { cn, mainNav } from "@/lib/utils";
 
 export function Header() {
   const [scrolled, setScrolled] = useState(false);
@@ -34,25 +27,26 @@ export function Header() {
       )}
     >
       <div className="mx-auto flex max-w-7xl items-center justify-between px-5 lg:px-8">
-        <Link href="/" aria-label="Accueil Smart Solutions">
+        <Link href="/" aria-label="Accueil Groupe Smart Solutions">
           <Logo variant="dark" />
         </Link>
 
-        <nav className="hidden items-center gap-9 md:flex">
-          {nav.map((item) => (
+        <nav className="hidden items-center gap-6 lg:flex">
+          {mainNav.map((item) => (
             <Link
               key={item.href}
               href={item.href}
-              className="text-sm font-medium text-plum-700 transition-colors hover:text-pink"
+              className="whitespace-nowrap text-sm font-medium text-plum-700 transition-colors hover:text-pink"
             >
               {item.label}
             </Link>
           ))}
         </nav>
 
-        <div className="hidden items-center gap-5 md:flex">
+        <div className="hidden items-center gap-4 lg:flex">
           <Link
             href="/admin"
+            aria-label="Espace de connexion"
             className="inline-flex items-center gap-1.5 text-sm font-medium text-plum-700 transition-colors hover:text-pink"
           >
             <LogIn size={16} /> Connexion
@@ -61,7 +55,7 @@ export function Header() {
             href="/contact"
             className="rounded-full bg-pink px-5 py-2.5 text-sm font-semibold text-white shadow-[0_10px_30px_-12px_rgba(233,30,99,0.5)] transition-transform hover:-translate-y-0.5"
           >
-            Nous contacter
+            Parlons de votre projet
           </Link>
         </div>
 
@@ -69,16 +63,16 @@ export function Header() {
           type="button"
           aria-label="Menu"
           onClick={() => setOpen((v) => !v)}
-          className="grid h-10 w-10 place-items-center rounded-lg border border-plum/15 text-plum-900 md:hidden"
+          className="grid h-10 w-10 place-items-center rounded-lg border border-plum/15 text-plum-900 lg:hidden"
         >
           {open ? <X size={20} /> : <Menu size={20} />}
         </button>
       </div>
 
       {open && (
-        <div className="mx-4 mt-3 rounded-2xl border border-plum/10 bg-white p-4 shadow-card md:hidden">
+        <div className="mx-4 mt-3 rounded-2xl border border-plum/10 bg-white p-4 shadow-card lg:hidden">
           <div className="flex flex-col gap-1">
-            {nav.map((item) => (
+            {mainNav.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
@@ -100,7 +94,7 @@ export function Header() {
               onClick={() => setOpen(false)}
               className="mt-2 rounded-full bg-pink px-5 py-3 text-center text-sm font-semibold text-white"
             >
-              Nous contacter
+              Parlons de votre projet
             </Link>
           </div>
         </div>

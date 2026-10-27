@@ -9,6 +9,9 @@ type ContactPayload = {
   email?: string;
   company?: string;
   subject?: string;
+  projectType?: string;
+  budget?: string;
+  availability?: string;
   message?: string;
   /** champ piège anti-spam : doit rester vide */
   website?: string;
@@ -30,7 +33,8 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Requête invalide." }, { status: 400 });
   }
 
-  const { name, email, company, subject, message, website } = body;
+  const { name, email, company, subject, projectType, budget, availability, message, website } = body;
+  const type = projectType || subject || "—";
 
   // Honeypot : un bot remplit ce champ caché.
   if (website) {
@@ -64,11 +68,13 @@ export async function POST(request: Request) {
   const resend = new Resend(apiKey);
 
   const html = `
-    <h2>Nouveau message — Smart Solutions</h2>
+    <h2>Nouvelle demande — Groupe Smart Solutions</h2>
     <p><strong>Nom :</strong> ${escapeHtml(name)}</p>
     <p><strong>Email :</strong> ${escapeHtml(email)}</p>
     ${company ? `<p><strong>Société :</strong> ${escapeHtml(company)}</p>` : ""}
-    <p><strong>Sujet :</strong> ${escapeHtml(subject || "—")}</p>
+    <p><strong>Type de projet :</strong> ${escapeHtml(type)}</p>
+    ${budget ? `<p><strong>Budget indicatif :</strong> ${escapeHtml(budget)}</p>` : ""}
+    ${availability ? `<p><strong>Disponibilité :</strong> ${escapeHtml(availability)}</p>` : ""}
     <hr />
     <p>${escapeHtml(message).replace(/\n/g, "<br />")}</p>
   `;
@@ -78,7 +84,7 @@ export async function POST(request: Request) {
       from,
       to: [to],
       replyTo: email,
-      subject: `[Contact] ${subject || "Nouveau message"} — ${name}`,
+      subject: `[Projet] ${type} — ${name}`,
       html,
     });
 

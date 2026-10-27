@@ -6,9 +6,9 @@ import { ContactForm } from "@/components/site/ContactForm";
 import { site } from "@/lib/utils";
 
 export const metadata: Metadata = {
-  title: "Contact",
+  title: "Contact — présentez-nous votre projet",
   description:
-    "Contactez Smart Solutions : parlez-nous de votre problématique, nous chercherons ensemble la solution la plus adaptée.",
+    "Présentez-nous votre projet : création d'entreprise, accompagnement, formation, acquisition ou solution digitale. Groupe Smart Solutions vous aide à identifier la bonne solution.",
 };
 
 export default function ContactPage() {
@@ -25,8 +25,8 @@ export default function ContactPage() {
           </h1>
           <div className="brand-bar mt-5 h-1.5 w-24 rounded-full" />
           <p className="mt-5 max-w-xl text-lg text-plum-700/85">
-            Parlez-nous simplement de votre situation — nous chercherons
-            ensemble la solution la plus adaptée. Réponse sous 48h.
+            Présentez-nous votre projet — nous identifions ensemble la solution
+            la plus adaptée. Réponse sous 48h ouvrées.
           </p>
         </div>
       </section>

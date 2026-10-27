@@ -4,13 +4,23 @@ import { useState } from "react";
 import { Send, CheckCircle2, Loader2 } from "lucide-react";
 import { site } from "@/lib/utils";
 
-const subjects = [
-  "Décrire une problématique",
-  "Conseil & accompagnement",
-  "Créer une solution digitale",
-  "Question sur GO PRESTA",
-  "Question sur Learneezy",
-  "Autre",
+const projectTypes = [
+  "Création d'entreprise",
+  "Développement d'activité",
+  "Coaching",
+  "Formation",
+  "Acquisition & patrimoine",
+  "Solution digitale (site, app, outil)",
+  "Événementiel (GO PRESTA)",
+  "Autre / je ne sais pas encore",
+];
+
+const budgets = [
+  "Je ne sais pas encore",
+  "Moins de 1 000 €",
+  "1 000 – 5 000 €",
+  "5 000 – 15 000 €",
+  "Plus de 15 000 €",
 ];
 
 type Status = "idle" | "sending" | "sent" | "error";
@@ -19,27 +29,37 @@ export function ContactForm() {
   const [status, setStatus] = useState<Status>("idle");
   const [errorMsg, setErrorMsg] = useState("");
 
-  function buildMailto(data: Record<string, string>) {
+  function buildMailto(d: Record<string, string>) {
     const body = [
-      `Nom : ${data.name}`,
-      `Email : ${data.email}`,
-      data.company ? `Société : ${data.company}` : null,
-      `Sujet : ${data.subject}`,
+      `Nom : ${d.name}`,
+      `Email : ${d.email}`,
+      d.company ? `Société : ${d.company}` : null,
+      `Type de projet : ${d.projectType}`,
+      d.budget ? `Budget indicatif : ${d.budget}` : null,
+      d.availability ? `Disponibilité : ${d.availability}` : null,
       "",
-      data.message,
+      d.message,
     ]
       .filter(Boolean)
       .join("\n");
     return `mailto:${site.email}?subject=${encodeURIComponent(
-      `[Contact] ${data.subject} — ${data.name}`
+      `[Projet] ${d.projectType} — ${d.name}`
     )}&body=${encodeURIComponent(body)}`;
   }
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    const form = e.currentTarget;
-    const fd = new FormData(form);
+    const fd = new FormData(e.currentTarget);
     const data = Object.fromEntries(fd.entries()) as Record<string, string>;
+
+    if (!data.consent) {
+      setErrorMsg("Merci d'accepter le traitement de vos données pour continuer.");
+      setStatus("error");
+      return;
+    }
+
+    // "subject" attendu par l'API : on y mappe le type de projet.
+    data.subject = data.projectType;
 
     setStatus("sending");
     setErrorMsg("");
@@ -50,24 +70,19 @@ export function ContactForm() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
       });
-
       if (res.ok) {
         setStatus("sent");
         return;
       }
-
-      // Service pas encore configuré → repli : on ouvre le client mail.
       if (res.status === 503) {
         window.location.href = buildMailto(data);
         setStatus("sent");
         return;
       }
-
       const json = await res.json().catch(() => ({}));
       setErrorMsg(json.error || "L'envoi a échoué. Merci de réessayer.");
       setStatus("error");
     } catch {
-      // Erreur réseau → repli mailto également.
       window.location.href = buildMailto(data);
       setStatus("sent");
     }
@@ -78,11 +93,11 @@ export function ContactForm() {
       <div className="flex flex-col items-center justify-center rounded-3xl border border-plum/10 bg-white p-12 text-center shadow-card">
         <CheckCircle2 className="text-pink" size={44} />
         <h3 className="mt-5 font-heading text-2xl font-bold text-plum-900">
-          Message envoyé&nbsp;!
+          Demande envoyée&nbsp;!
         </h3>
         <p className="mt-3 max-w-sm text-plum-700/80">
-          Merci pour votre message. L'équipe Smart Solutions vous recontacte sous
-          48h ouvrées.
+          Merci pour votre message. Nous revenons vers vous rapidement pour
+          échanger sur votre projet.
         </p>
       </div>
     );
@@ -96,57 +111,70 @@ export function ContactForm() {
       className="rounded-3xl border border-plum/10 bg-white p-7 shadow-card sm:p-9"
     >
       {/* honeypot anti-spam (masqué) */}
-      <input
-        type="text"
-        name="website"
-        tabIndex={-1}
-        autoComplete="off"
-        className="hidden"
-        aria-hidden="true"
-      />
+      <input type="text" name="website" tabIndex={-1} autoComplete="off" className="hidden" aria-hidden="true" />
 
       <div className="grid gap-5 sm:grid-cols-2">
-        <Field label="Nom complet" htmlFor="name">
+        <Field label="Nom complet *" htmlFor="name">
           <input id="name" name="name" required className={inputCls} placeholder="Jean Dupont" />
         </Field>
-        <Field label="Email" htmlFor="email">
+        <Field label="Email *" htmlFor="email">
           <input id="email" name="email" type="email" required className={inputCls} placeholder="jean@exemple.fr" />
         </Field>
         <Field label="Société (optionnel)" htmlFor="company">
           <input id="company" name="company" className={inputCls} placeholder="Votre entreprise" />
         </Field>
-        <Field label="Sujet" htmlFor="subject">
-          <select id="subject" name="subject" className={inputCls} defaultValue={subjects[0]}>
-            {subjects.map((s) => (
+        <Field label="Type de projet *" htmlFor="projectType">
+          <select id="projectType" name="projectType" className={inputCls} defaultValue={projectTypes[0]}>
+            {projectTypes.map((s) => (
               <option key={s}>{s}</option>
             ))}
           </select>
         </Field>
+        <Field label="Budget indicatif (optionnel)" htmlFor="budget">
+          <select id="budget" name="budget" className={inputCls} defaultValue={budgets[0]}>
+            {budgets.map((s) => (
+              <option key={s}>{s}</option>
+            ))}
+          </select>
+        </Field>
+        <Field label="Disponibilité souhaitée (optionnel)" htmlFor="availability">
+          <input id="availability" name="availability" className={inputCls} placeholder="Ex. en semaine, en journée…" />
+        </Field>
       </div>
 
       <div className="mt-5">
-        <Field label="Votre message" htmlFor="message">
+        <Field label="Décrivez votre besoin *" htmlFor="message">
           <textarea
             id="message"
             name="message"
             required
             rows={5}
             className={`${inputCls} resize-none`}
-            placeholder="Décrivez votre besoin en quelques lignes…"
+            placeholder="Parlez-nous de votre projet, de votre situation et de vos objectifs…"
           />
         </Field>
       </div>
 
+      <label className="mt-5 flex items-start gap-3 text-sm text-plum-700/85">
+        <input type="checkbox" name="consent" value="oui" className="mt-0.5 h-4 w-4 accent-pink" />
+        <span>
+          J&apos;accepte que mes données soient utilisées pour traiter ma demande,
+          conformément à la{" "}
+          <a href="/confidentialite" className="text-pink-dark underline hover:text-pink">
+            politique de confidentialité
+          </a>
+          . Elles ne sont ni revendues ni cédées.
+        </span>
+      </label>
+
       {status === "error" && (
-        <p className="mt-4 rounded-xl bg-pink/10 px-4 py-3 text-sm text-pink-dark">
-          {errorMsg}
-        </p>
+        <p className="mt-4 rounded-xl bg-pink/10 px-4 py-3 text-sm text-pink-dark">{errorMsg}</p>
       )}
 
       <button
         type="submit"
         disabled={sending}
-        className="mt-7 inline-flex w-full items-center justify-center gap-2 rounded-full bg-pink px-7 py-4 text-sm font-semibold text-white shadow-[0_16px_40px_-14px_rgba(233,30,99,0.6)] transition-transform hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-70 sm:w-auto"
+        className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-full bg-pink px-7 py-4 text-sm font-semibold text-white shadow-[0_16px_40px_-14px_rgba(233,30,99,0.6)] transition-transform hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-70 sm:w-auto"
       >
         {sending ? (
           <>
@@ -154,7 +182,7 @@ export function ContactForm() {
           </>
         ) : (
           <>
-            Envoyer le message <Send size={16} />
+            Envoyer ma demande <Send size={16} />
           </>
         )}
       </button>

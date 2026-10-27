@@ -91,3 +91,129 @@ export const branches: readonly Branch[] = [
 export function getBranch(slug: string) {
   return branches.find((b) => b.slug === slug);
 }
+
+/* ------------------------------------------------------------------ */
+/*  Domaines d'expertise du groupe                                     */
+/* ------------------------------------------------------------------ */
+
+export type Expertise = {
+  slug: string;
+  /** clé d'icône (mappée vers lucide dans les composants) */
+  icon: string;
+  title: string;
+  short: string;
+  needs: readonly string[];
+  href: string;
+  /** accent (palette de marque) */
+  color: string;
+};
+
+export const expertises: readonly Expertise[] = [
+  {
+    slug: "business",
+    icon: "rocket",
+    title: "Business & Entrepreneuriat",
+    short:
+      "Créer, structurer et développer votre activité, avec une stratégie claire et des actions concrètes.",
+    needs: [
+      "Lancer ou cadrer un projet d'entreprise",
+      "Structurer et développer son activité",
+      "Clarifier sa stratégie commerciale",
+    ],
+    href: "/accompagnements",
+    color: "#e91e63",
+  },
+  {
+    slug: "coaching-formation",
+    icon: "graduation",
+    title: "Coaching & Formation",
+    short:
+      "Monter en compétences et avancer, grâce au coaching, aux formations et à des méthodes transmissibles.",
+    needs: [
+      "Être accompagné individuellement",
+      "Se former ou former ses équipes",
+      "Gagner en méthode et en confiance",
+    ],
+    href: "/accompagnements",
+    color: "#29abe2",
+  },
+  {
+    slug: "acquisition-patrimoine",
+    icon: "home",
+    title: "Acquisition & Patrimoine",
+    short:
+      "Clarifier et préparer un projet d'acquisition, étape par étape, avec prudence et méthode.",
+    needs: [
+      "Clarifier ses objectifs",
+      "Préparer un projet d'acquisition",
+      "Être orienté au bon moment",
+    ],
+    href: "/acquisition-patrimoine",
+    color: "#5f2b60",
+  },
+  {
+    slug: "digital",
+    icon: "code",
+    title: "Digital & Solutions technologiques",
+    short:
+      "Concevoir les outils qui vous font avancer : sites, applications, automatisations et solutions sur mesure.",
+    needs: [
+      "Créer un site ou une application",
+      "Automatiser et gagner du temps",
+      "Doter son activité d'outils métier",
+    ],
+    href: "/solutions-digitales",
+    color: "#34c24a",
+  },
+  {
+    slug: "evenementiel",
+    icon: "party",
+    title: "Événementiel",
+    short:
+      "Des services événementiels portés par notre marque spécialisée GO PRESTA.",
+    needs: [
+      "Organiser un événement",
+      "Trouver des prestataires fiables",
+      "Développer son activité de prestataire",
+    ],
+    href: "/ecosysteme",
+    color: "#f4c81f",
+  },
+];
+
+/** Les 4 parcours « de quelle solution ai-je besoin ? » */
+export const parcours = [
+  {
+    icon: "rocket",
+    label: "Je veux créer ou développer mon activité",
+    href: "/accompagnements",
+    color: "#e91e63",
+  },
+  {
+    icon: "graduation",
+    label: "Je veux me former ou être accompagné",
+    href: "/accompagnements",
+    color: "#29abe2",
+  },
+  {
+    icon: "home",
+    label: "Je veux préparer un projet d'acquisition",
+    href: "/acquisition-patrimoine",
+    color: "#5f2b60",
+  },
+  {
+    icon: "code",
+    label: "Je veux créer un outil ou une solution numérique",
+    href: "/solutions-digitales",
+    color: "#34c24a",
+  },
+] as const;
+
+/** Navigation principale du site */
+export const mainNav = [
+  { label: "Nos accompagnements", href: "/accompagnements" },
+  { label: "Nos solutions", href: "/solutions-digitales" },
+  { label: "Notre écosystème", href: "/ecosysteme" },
+  { label: "À propos", href: "/a-propos" },
+  { label: "Contact", href: "/contact" },
+] as const;

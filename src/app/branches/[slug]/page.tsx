@@ -49,7 +49,7 @@ export default async function BranchPage({
         />
         <div className="relative mx-auto max-w-7xl px-5 lg:px-8">
           <Link
-            href="/#solutions"
+            href="/ecosysteme"
             className="inline-flex items-center gap-2 text-sm text-plum-700 transition-colors hover:text-pink"
           >
             <ArrowLeft size={16} /> Toutes les solutions

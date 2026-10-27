@@ -17,29 +17,35 @@ const jost = Jost({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://groupesmartsolutions.fr"),
   title: {
-    default: "Smart Solutions — Conseil & solutions digitales",
-    template: "%s · Smart Solutions",
+    default: "Groupe Smart Solutions — Créer, développer & valoriser vos projets",
+    template: "%s · Groupe Smart Solutions",
   },
   description:
-    "Smart Solutions est un groupe qui accompagne ses clients et met à disposition des plateformes clés en main, spécialisé en formation, IA, digital et événementiel. Go Presta et Learnezy sont deux de ses branches.",
+    "Groupe Smart Solutions accompagne particuliers et entreprises : création et développement d'entreprise, coaching, formation, acquisition & patrimoine et solutions digitales. GO PRESTA et Learneezy font partie de son écosystème.",
   keywords: [
-    "Smart Solutions",
-    "conseil digital",
-    "accompagnement",
-    "plateformes SaaS",
+    "Groupe Smart Solutions",
+    "accompagnement entreprise",
+    "création d'entreprise",
+    "conseil",
+    "coaching professionnel",
     "formation",
-    "intelligence artificielle",
-    "événementiel",
-    "Go Presta",
-    "Learnezy",
+    "solutions digitales",
+    "création de site internet",
+    "automatisation",
+    "GO PRESTA",
+    "Learneezy",
   ],
+  alternates: { canonical: "/" },
   openGraph: {
-    title: "Smart Solutions — Conseil & solutions digitales",
+    title: "Groupe Smart Solutions",
     description:
-      "Nous transformons les problématiques en solutions : accompagnement, conseil et solutions digitales.",
+      "Les solutions pour créer, développer et valoriser votre richesse : accompagnement, conseil, formation et solutions digitales.",
     type: "website",
     locale: "fr_FR",
+    url: "https://groupesmartsolutions.fr",
+    siteName: "Groupe Smart Solutions",
   },
   icons: {
     icon: "/logo-mark.png",
