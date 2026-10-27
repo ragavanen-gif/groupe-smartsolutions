@@ -15,8 +15,8 @@ import { Icon } from "@/components/site/Icon";
 import { HomeVideo } from "@/components/site/HomeVideo";
 import { branches, expertises, parcours } from "@/lib/utils";
 
-// Re-génère la page toutes les 60 s pour refléter la vidéo définie en admin.
-export const revalidate = 60;
+// Rendu dynamique : l'accueil lit toujours la vidéo définie en admin, à jour.
+export const dynamic = "force-dynamic";
 
 const approche = [
   { icon: Search, title: "Comprendre", text: "Nous partons de votre besoin réel, de vos objectifs et de vos contraintes." },
