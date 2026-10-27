@@ -12,8 +12,9 @@ import {
 import { Header } from "@/components/site/Header";
 import { Footer } from "@/components/site/Footer";
 import { Icon } from "@/components/site/Icon";
-import { HomeVideo } from "@/components/site/HomeVideo";
-import { branches, expertises, parcours } from "@/lib/utils";
+import { VideoPlayer } from "@/components/site/VideoPlayer";
+import { branches, expertises, parcours, cn } from "@/lib/utils";
+import { getHomeVideo, getEmbed } from "@/lib/settings";
 
 // Rendu dynamique : l'accueil lit toujours la vidéo définie en admin, à jour.
 export const dynamic = "force-dynamic";
@@ -32,7 +33,11 @@ const methode = [
   { step: "04", title: "Accompagner la mise en œuvre", text: "Un suivi pour transformer la décision en résultats concrets." },
 ];
 
-export default function Home() {
+export default async function Home() {
+  const video = await getHomeVideo();
+  const embed = video.enabled && video.url ? getEmbed(video.url) : null;
+  const hasVideo = Boolean(embed?.src);
+
   return (
     <main className="overflow-x-hidden bg-ivory">
       <Header />
@@ -45,25 +50,47 @@ export default function Home() {
           <div className="absolute -left-20 bottom-0 h-72 w-72 rounded-full bg-[radial-gradient(circle,rgba(52,194,74,0.08),transparent_70%)]" />
         </div>
 
-        <div className="relative mx-auto w-full max-w-5xl px-5 pt-32 pb-20 text-center lg:px-8">
-          <div className="animate-fade-up">
+        <div
+          className={cn(
+            "relative mx-auto w-full px-5 pt-32 pb-20 lg:px-8",
+            hasVideo
+              ? "grid max-w-7xl items-center gap-12 lg:grid-cols-[1.05fr_0.95fr]"
+              : "max-w-5xl text-center"
+          )}
+        >
+          <div className={cn("animate-fade-up", hasVideo && "text-center lg:text-left")}>
             <span className="inline-flex items-center gap-2 rounded-full border border-pink/25 bg-pink/10 px-4 py-1.5 text-xs font-semibold text-pink-dark">
               <span className="h-1.5 w-1.5 rounded-full bg-pink" />
               Accompagnement · Conseil · Solutions
             </span>
 
-            <h1 className="mx-auto mt-7 max-w-4xl font-heading text-4xl font-extrabold leading-[1.07] text-plum-900 sm:text-6xl">
-              Vos ambitions méritent les
-              <br className="hidden sm:block" /> bonnes <span className="text-gradient-pink">solutions</span>.
+            <h1
+              className={cn(
+                "mt-7 font-heading text-4xl font-extrabold leading-[1.07] text-plum-900 sm:text-6xl",
+                hasVideo ? "max-w-xl lg:text-5xl" : "mx-auto max-w-4xl"
+              )}
+            >
+              Vos ambitions méritent les bonnes{" "}
+              <span className="text-gradient-pink">solutions</span>.
             </h1>
 
-            <p className="mx-auto mt-7 max-w-2xl text-lg leading-relaxed text-plum-700/85">
+            <p
+              className={cn(
+                "mt-7 text-lg leading-relaxed text-plum-700/85",
+                hasVideo ? "max-w-xl" : "mx-auto max-w-2xl"
+              )}
+            >
               Entreprendre, développer votre activité, valoriser votre patrimoine
               ou concevoir les outils qui vous feront avancer : nous vous aidons à
               transformer vos projets en réalisations concrètes.
             </p>
 
-            <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
+            <div
+              className={cn(
+                "mt-9 flex flex-col items-center gap-3 sm:flex-row",
+                hasVideo ? "lg:justify-start" : "justify-center"
+              )}
+            >
               <Link
                 href="/#parcours"
                 className="inline-flex items-center justify-center gap-2 rounded-full bg-pink px-7 py-3.5 text-sm font-semibold text-white shadow-[0_16px_40px_-14px_rgba(233,30,99,0.6)] transition-transform hover:-translate-y-0.5"
@@ -78,11 +105,14 @@ export default function Home() {
               </Link>
             </div>
           </div>
+
+          {hasVideo && embed && (
+            <div className="animate-fade-up">
+              <VideoPlayer src={embed.src} type={embed.type} title={video.title} />
+            </div>
+          )}
         </div>
       </section>
-
-      {/* ---------------- VIDÉO (gérée en admin) ---------------- */}
-      <HomeVideo />
 
       {/* ---------------- PARCOURS ---------------- */}
       <section id="parcours" className="border-t border-plum/5 bg-white py-20">
