@@ -1,0 +1,48 @@
+import { createClient } from "@supabase/supabase-js";
+
+export type HomeVideo = { url: string; enabled: boolean; title?: string };
+
+const FALLBACK: HomeVideo = { url: "", enabled: false, title: "" };
+
+/** Lecture publique du réglage de la vidéo d'accueil (clé anon). */
+export async function getHomeVideo(): Promise<HomeVideo> {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  if (!url || !key) return FALLBACK;
+  try {
+    const sb = createClient(url, key, { auth: { persistSession: false } });
+    const { data } = await sb
+      .from("site_settings")
+      .select("value")
+      .eq("key", "home_video")
+      .maybeSingle();
+    const v = (data?.value ?? {}) as Partial<HomeVideo>;
+    return {
+      url: v.url?.trim() || "",
+      enabled: Boolean(v.enabled),
+      title: v.title || "",
+    };
+  } catch {
+    // table absente ou erreur réseau : on masque simplement la vidéo.
+    return FALLBACK;
+  }
+}
+
+/** Transforme une URL en source lisible (iframe YouTube/Vimeo ou balise video). */
+export function getEmbed(raw: string): { type: "iframe" | "video" | null; src: string } {
+  const url = (raw || "").trim();
+  if (!url) return { type: null, src: "" };
+
+  const yt = url.match(
+    /(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([A-Za-z0-9_-]{6,})/
+  );
+  if (yt) return { type: "iframe", src: `https://www.youtube.com/embed/${yt[1]}` };
+
+  const vm = url.match(/vimeo\.com\/(?:video\/)?(\d+)/);
+  if (vm) return { type: "iframe", src: `https://player.vimeo.com/video/${vm[1]}` };
+
+  if (/\.(mp4|webm|ogg|mov)(\?|#|$)/i.test(url)) return { type: "video", src: url };
+
+  // Par défaut, on tente un iframe (URL d'intégration déjà prête).
+  return { type: "iframe", src: url };
+}

@@ -12,7 +12,11 @@ import {
 import { Header } from "@/components/site/Header";
 import { Footer } from "@/components/site/Footer";
 import { Icon } from "@/components/site/Icon";
+import { HomeVideo } from "@/components/site/HomeVideo";
 import { branches, expertises, parcours } from "@/lib/utils";
+
+// Re-génère la page toutes les 60 s pour refléter la vidéo définie en admin.
+export const revalidate = 60;
 
 const approche = [
   { icon: Search, title: "Comprendre", text: "Nous partons de votre besoin réel, de vos objectifs et de vos contraintes." },
@@ -76,6 +80,9 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* ---------------- VIDÉO (gérée en admin) ---------------- */}
+      <HomeVideo />
 
       {/* ---------------- PARCOURS ---------------- */}
       <section id="parcours" className="border-t border-plum/5 bg-white py-20">
@@ -156,7 +163,7 @@ export default function Home() {
           <div className="mx-auto max-w-2xl text-center">
             <p className="eyebrow text-pink-dark">Nos expertises</p>
             <h2 className="mt-3 font-heading text-3xl font-bold text-plum-900 sm:text-4xl">
-              Cinq domaines, un même écosystème
+              Quatre domaines, un même écosystème
             </h2>
             <p className="mt-4 text-plum-700/80">
               Chaque domaine répond à un besoin précis. Ensemble, ils couvrent
@@ -164,7 +171,7 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          <div className="mt-12 grid gap-6 md:grid-cols-2">
             {expertises.map((e) => (
               <Link
                 key={e.slug}

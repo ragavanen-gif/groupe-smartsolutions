@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import type { Metadata } from "next";
-import { ArrowUpRight, ShieldCheck, Clock, KeyRound } from "lucide-react";
+import { ArrowUpRight, ShieldCheck, Clock, KeyRound, Video } from "lucide-react";
 import { Logo } from "@/components/site/Logo";
 import { LogoutButton } from "@/components/admin/LogoutButton";
 import { branches } from "@/lib/utils";
@@ -110,6 +110,32 @@ export default async function AdminDashboard() {
               Vos prochaines solutions apparaîtront ici.
             </p>
           </article>
+        </div>
+
+        <div className="mt-12">
+          <div className="flex items-center gap-2 text-pink-dark">
+            <Video size={18} />
+            <span className="eyebrow">Contenu du site</span>
+          </div>
+          <div className="mt-4 grid gap-4 sm:grid-cols-2">
+            <Link
+              href="/admin/video"
+              className="group flex items-center gap-4 rounded-2xl border border-plum/10 bg-white p-5 transition-all hover:-translate-y-0.5 hover:shadow-card"
+            >
+              <span className="grid h-11 w-11 place-items-center rounded-xl bg-pink/10 text-pink-dark">
+                <Video size={20} />
+              </span>
+              <span>
+                <span className="block font-heading text-base font-bold text-plum-900">
+                  Vidéo d&apos;accueil
+                </span>
+                <span className="block text-sm text-plum-700/70">
+                  Ajouter ou changer la vidéo
+                </span>
+              </span>
+              <ArrowUpRight size={16} className="ml-auto text-plum-400 transition-colors group-hover:text-pink" />
+            </Link>
+          </div>
         </div>
 
         <div className="mt-10 flex flex-col items-start justify-between gap-4 rounded-2xl border border-plum/10 bg-white p-5 sm:flex-row sm:items-center">

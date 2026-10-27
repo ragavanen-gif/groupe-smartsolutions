@@ -15,6 +15,8 @@ const securityHeaders = [
       "font-src 'self' data:",
       "img-src 'self' data: blob: https://images.unsplash.com",
       "connect-src 'self' https://*.supabase.co wss://*.supabase.co",
+      "frame-src 'self' https://www.youtube.com https://www.youtube-nocookie.com https://player.vimeo.com",
+      "media-src 'self' blob: https:",
       "object-src 'none'",
       "base-uri 'self'",
       "form-action 'self'",

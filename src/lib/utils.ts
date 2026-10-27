@@ -165,20 +165,6 @@ export const expertises: readonly Expertise[] = [
     href: "/solutions-digitales",
     color: "#34c24a",
   },
-  {
-    slug: "evenementiel",
-    icon: "party",
-    title: "Événementiel",
-    short:
-      "Des services événementiels portés par notre marque spécialisée GO PRESTA.",
-    needs: [
-      "Organiser un événement",
-      "Trouver des prestataires fiables",
-      "Développer son activité de prestataire",
-    ],
-    href: "/ecosysteme",
-    color: "#f4c81f",
-  },
 ];
 
 /** Les 4 parcours « de quelle solution ai-je besoin ? » */
