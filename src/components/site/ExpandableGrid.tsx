@@ -24,15 +24,20 @@ function Card({ item, stat }: { item: EcoItem; stat?: RatingStat }) {
                 {item.status}
               </span>
             )}
-            {stat && stat.count > 0 && (
-              <span className="inline-flex items-center gap-1 text-xs font-semibold text-plum-700">
-                <Star size={13} className="fill-pink text-pink" />
-                {stat.avg != null && <span>{stat.avg.toFixed(1)}</span>}
-                <span className="font-normal text-plum-400">
-                  · {stat.count} avis
-                </span>
-              </span>
-            )}
+            <span className="inline-flex items-center gap-1 rounded-full border border-plum/10 bg-ivory px-2.5 py-1 text-xs font-bold text-plum-800">
+              <Star
+                size={13}
+                className={stat && stat.count > 0 ? "fill-pink text-pink" : "text-plum-300"}
+              />
+              {stat && stat.count > 0 ? (
+                <>
+                  {stat.avg != null && <span>{stat.avg.toFixed(1)}</span>}
+                  <span className="font-medium text-plum-400">· {stat.count} avis</span>
+                </>
+              ) : (
+                <span className="font-medium text-plum-400">Aucun avis</span>
+              )}
+            </span>
           </div>
         </div>
         <h4 className="mt-2 font-heading text-2xl font-extrabold text-plum-900">{item.name}</h4>
