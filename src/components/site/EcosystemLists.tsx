@@ -1,8 +1,12 @@
 import { ExpandableGrid } from "./ExpandableGrid";
 import { getEcosystem } from "@/lib/settings";
+import { getRatingStats } from "@/lib/comments";
 
 export async function EcosystemLists() {
-  const { projects, partners } = await getEcosystem();
+  const [{ projects, partners }, stats] = await Promise.all([
+    getEcosystem(),
+    getRatingStats(),
+  ]);
 
   return (
     <div className="mt-12 space-y-16">
@@ -15,7 +19,7 @@ export async function EcosystemLists() {
             </h3>
           </div>
           <div className="mt-8">
-            <ExpandableGrid items={projects} initial={2} />
+            <ExpandableGrid items={projects} initial={2} stats={stats} />
           </div>
         </div>
       )}
@@ -29,7 +33,7 @@ export async function EcosystemLists() {
             </h3>
           </div>
           <div className="mt-8">
-            <ExpandableGrid items={partners} initial={2} />
+            <ExpandableGrid items={partners} initial={2} stats={stats} />
           </div>
         </div>
       )}

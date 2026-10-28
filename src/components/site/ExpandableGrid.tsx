@@ -2,10 +2,11 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { ArrowUpRight, ChevronDown, ChevronUp } from "lucide-react";
+import { ArrowUpRight, ChevronDown, ChevronUp, Star } from "lucide-react";
 import type { EcoItem } from "@/lib/utils";
+import type { RatingStat } from "@/lib/comments";
 
-function Card({ item }: { item: EcoItem }) {
+function Card({ item, stat }: { item: EcoItem; stat?: RatingStat }) {
   return (
     <Link href={`/projet/${item.id}`} className="block h-full">
       <article className="group relative flex h-full flex-col overflow-hidden rounded-3xl border border-plum/10 bg-white p-8 transition-all hover:-translate-y-1 hover:shadow-card">
@@ -14,14 +15,25 @@ function Card({ item }: { item: EcoItem }) {
           <p className="eyebrow" style={{ color: item.color }}>
             {item.category}
           </p>
-          {item.status && (
-            <span
-              className="rounded-full px-3 py-0.5 text-xs font-semibold"
-              style={{ color: item.color, backgroundColor: `${item.color}1f` }}
-            >
-              {item.status}
-            </span>
-          )}
+          <div className="flex shrink-0 flex-col items-end gap-1.5">
+            {item.status && (
+              <span
+                className="rounded-full px-3 py-0.5 text-xs font-semibold"
+                style={{ color: item.color, backgroundColor: `${item.color}1f` }}
+              >
+                {item.status}
+              </span>
+            )}
+            {stat && stat.count > 0 && (
+              <span className="inline-flex items-center gap-1 text-xs font-semibold text-plum-700">
+                <Star size={13} className="fill-pink text-pink" />
+                {stat.avg != null && <span>{stat.avg.toFixed(1)}</span>}
+                <span className="font-normal text-plum-400">
+                  · {stat.count} avis
+                </span>
+              </span>
+            )}
+          </div>
         </div>
         <h4 className="mt-2 font-heading text-2xl font-extrabold text-plum-900">{item.name}</h4>
         <p className="mt-3 leading-relaxed text-plum-700/80">{item.description}</p>
@@ -36,9 +48,11 @@ function Card({ item }: { item: EcoItem }) {
 export function ExpandableGrid({
   items,
   initial = 2,
+  stats,
 }: {
   items: EcoItem[];
   initial?: number;
+  stats?: Record<string, RatingStat>;
 }) {
   const [open, setOpen] = useState(false);
   if (items.length === 0) return null;
@@ -50,7 +64,7 @@ export function ExpandableGrid({
     <div>
       <div className="grid gap-6 md:grid-cols-2">
         {shown.map((item) => (
-          <Card key={item.id} item={item} />
+          <Card key={item.id} item={item} stat={stats?.[item.id]} />
         ))}
       </div>
 
