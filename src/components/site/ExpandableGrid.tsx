@@ -6,42 +6,30 @@ import { ArrowUpRight, ChevronDown, ChevronUp } from "lucide-react";
 import type { EcoItem } from "@/lib/utils";
 
 function Card({ item }: { item: EcoItem }) {
-  const isInternal = item.url?.startsWith("/");
-  const inner = (
-    <article className="group relative flex h-full flex-col overflow-hidden rounded-3xl border border-plum/10 bg-white p-8 transition-all hover:-translate-y-1 hover:shadow-card">
-      <span className="absolute inset-x-0 top-0 h-1.5" style={{ backgroundColor: item.color }} />
-      <div className="flex items-start justify-between gap-3">
-        <p className="eyebrow" style={{ color: item.color }}>
-          {item.category}
-        </p>
-        {item.status && (
-          <span
-            className="rounded-full px-3 py-0.5 text-xs font-semibold"
-            style={{ color: item.color, backgroundColor: `${item.color}1f` }}
-          >
-            {item.status}
-          </span>
-        )}
-      </div>
-      <h4 className="mt-2 font-heading text-2xl font-extrabold text-plum-900">{item.name}</h4>
-      <p className="mt-3 leading-relaxed text-plum-700/80">{item.description}</p>
-      {item.url && (
+  return (
+    <Link href={`/projet/${item.id}`} className="block h-full">
+      <article className="group relative flex h-full flex-col overflow-hidden rounded-3xl border border-plum/10 bg-white p-8 transition-all hover:-translate-y-1 hover:shadow-card">
+        <span className="absolute inset-x-0 top-0 h-1.5" style={{ backgroundColor: item.color }} />
+        <div className="flex items-start justify-between gap-3">
+          <p className="eyebrow" style={{ color: item.color }}>
+            {item.category}
+          </p>
+          {item.status && (
+            <span
+              className="rounded-full px-3 py-0.5 text-xs font-semibold"
+              style={{ color: item.color, backgroundColor: `${item.color}1f` }}
+            >
+              {item.status}
+            </span>
+          )}
+        </div>
+        <h4 className="mt-2 font-heading text-2xl font-extrabold text-plum-900">{item.name}</h4>
+        <p className="mt-3 leading-relaxed text-plum-700/80">{item.description}</p>
         <span className="mt-6 inline-flex items-center gap-1.5 text-sm font-semibold text-pink transition-transform group-hover:translate-x-1">
-          En savoir plus <ArrowUpRight size={16} />
+          Découvrir & laisser un avis <ArrowUpRight size={16} />
         </span>
-      )}
-    </article>
-  );
-
-  if (!item.url) return <div className="h-full">{inner}</div>;
-  return isInternal ? (
-    <Link href={item.url} className="block h-full">
-      {inner}
+      </article>
     </Link>
-  ) : (
-    <a href={item.url} target="_blank" rel="noopener noreferrer" className="block h-full">
-      {inner}
-    </a>
   );
 }
 

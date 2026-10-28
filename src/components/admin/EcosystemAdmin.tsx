@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Loader2, Save, Plus, Trash2 } from "lucide-react";
+import { Loader2, Save, Plus, Trash2, Copy, Check, MessageCircle, Mail } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { defaultProjects, defaultPartners, ECO_COLORS, type EcoItem } from "@/lib/utils";
 
@@ -217,6 +217,8 @@ function ListEditor({
                 </select>
               </Field>
             </div>
+
+            <ShareBlock id={it.id} name={it.name} />
           </div>
         ))}
       </div>
@@ -228,6 +230,63 @@ function ListEditor({
         <Plus size={16} /> Ajouter un bloc
       </button>
     </section>
+  );
+}
+
+function ShareBlock({ id, name }: { id: string; name: string }) {
+  const [copied, setCopied] = useState(false);
+  const origin = typeof window !== "undefined" ? window.location.origin : "";
+  const link = `${origin}/projet/${id}`;
+  const msg = `Donnez votre avis sur « ${name || "ce projet"} » : ${link}`;
+  const wa = `https://wa.me/?text=${encodeURIComponent(msg)}`;
+  const mail = `mailto:?subject=${encodeURIComponent(
+    `Votre avis sur ${name || "ce projet"}`
+  )}&body=${encodeURIComponent(msg)}`;
+
+  async function copy() {
+    try {
+      await navigator.clipboard.writeText(link);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1800);
+    } catch {
+      /* ignore */
+    }
+  }
+
+  const btn =
+    "inline-flex items-center gap-1 rounded-lg border border-plum/15 px-2.5 py-1.5 text-xs font-medium text-plum-700 transition-colors hover:border-pink hover:text-pink";
+
+  return (
+    <div className="mt-3 rounded-xl border border-plum/10 bg-ivory p-3">
+      <p className="text-xs font-semibold uppercase tracking-[0.1em] text-plum-400">
+        Lien d&apos;avis à partager
+      </p>
+      <div className="mt-2 flex flex-wrap items-center gap-2">
+        <code className="max-w-full truncate rounded-lg border border-plum/10 bg-white px-2.5 py-1.5 text-xs text-plum-700">
+          {link}
+        </code>
+        <button type="button" onClick={copy} className={btn}>
+          {copied ? (
+            <>
+              <Check size={13} /> Copié
+            </>
+          ) : (
+            <>
+              <Copy size={13} /> Copier
+            </>
+          )}
+        </button>
+        <a href={wa} target="_blank" rel="noopener noreferrer" className={btn}>
+          <MessageCircle size={13} /> WhatsApp
+        </a>
+        <a href={mail} className={btn}>
+          <Mail size={13} /> Email
+        </a>
+      </div>
+      <p className="mt-1.5 text-[0.7rem] text-plum-400">
+        Enregistrez vos modifications pour que le lien soit actif.
+      </p>
+    </div>
   );
 }
 

@@ -36,6 +36,18 @@ export async function getEcosystem(): Promise<Ecosystem> {
   }
 }
 
+/** Retrouve un projet / partenaire par son identifiant (toutes listes confondues). */
+export async function getEcoItem(
+  id: string
+): Promise<{ item: EcoItem; kind: "project" | "partner" } | null> {
+  const { projects, partners } = await getEcosystem();
+  const p = projects.find((x) => x.id === id);
+  if (p) return { item: p, kind: "project" };
+  const q = partners.find((x) => x.id === id);
+  if (q) return { item: q, kind: "partner" };
+  return null;
+}
+
 const FALLBACK: HomeVideo = { url: "", enabled: false, title: "" };
 
 /** Lecture publique du réglage de la vidéo d'accueil (clé anon). */
